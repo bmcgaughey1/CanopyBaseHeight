@@ -15,10 +15,10 @@ library(rgl)
 # the issues cause any problems.
 #
 # read point cloud for tree...manually change the file names for read and write
-treeLAS <- readLDA("extras/trees_clip_0000183.lda", type = "LAS", LASTemplate = "H:/T3_DroneLidar/Ba/Plot37/Ba_plot_37_001.laz")
+#treeLAS <- readLDA("extras/trees_clip_0000183.lda", type = "LAS", LASTemplate = "H:/T3_DroneLidar/Ba/Plot37/Ba_plot_37_001.laz")
 
 # write LAS file
-writeLAS(treeLAS, "extras/tree_0000183.las")
+#writeLAS(treeLAS, "extras/tree_0000183.las")
 
 # function to implement cone clipping
 # basic idea is to specify the XYZ for the cone point and then the slope of the sides (or angle of the cone).
@@ -201,6 +201,15 @@ cbh <- computeCbh(ptsClip$z, groundz)
 
 #plot3d(treeLAS@data$X - highx, treeLAS@data$Y - highy, treeLAS@data$Z - groundz, size = 2, col = "cyan", aspect = c(1, 1, 10), decorate = FALSE)
 plot3d(ptsClip$x - highx, ptsClip$y - highy, ptsClip$z - groundz, add = TRUE, size = 4, col = "black", aspect = c(1,1,10))
+
+
+# rotate 45 degrees around x
+source("Rcode/rotateXYZ.R")
+dfr <- rotateXYZ(ptsClip$x, ptsClip$y, ptsClip$z, 0, 45, 45, highx, highy, groundz)
+#dfr <- rotateXYZ(dfr$x, dfr$y, dfr$z, 0, 45, 0, highx, highy, groundz)
+
+
+plot3d(dfr$x - highx, dfr$y - highy, dfr$z - groundz, add = TRUE, size = 4, col = "orange")
 
 # display the cone with the points...need to compute coordinates
 baseRadius <- baseDia / 2
